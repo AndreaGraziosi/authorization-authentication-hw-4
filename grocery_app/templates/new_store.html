@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>New Store</h1>
+
+<form>
+    <fieldset>
+        <legend>Please enter your information:</legend>
+
+        {{ form.title.label }}
+        {{ form.title }}
+
+
+        {{ form.address.label }}
+        {{ form.address }}
+
+
+        <input type="submit" value="Submit">
+    </fieldset>
+</form>
+
+
+{% endblock %}
