@@ -13,10 +13,25 @@
             {% endfor %}
             <nav>
                 <a href="/">Home</a>
-                <div>
-                    <a href="/new_store">New Store</a>
-                    <a href="/new_item">New Item</a>
-                </div>
+                
+                <div id="content">
+                    <nav>
+                    
+                        <div>
+                            {% if current_user.is_authenticated %}
+                            <div>
+                                <a href="/new_store">New Store</a>
+                                <a href="/new_item">New Item</a>
+                            </div>
+                            {% else %}
+        
+                            <!-- TODO: Only show these links if the current user is NOT
+                                authenticated (logged in)! -->
+                            <a href="/signup">Sign Up</a>
+                            <a href="/login">Log In</a>
+                            {% endif %}
+                            
+                        </div>
             </nav>
             {% block content %}{% endblock %}
         </div>

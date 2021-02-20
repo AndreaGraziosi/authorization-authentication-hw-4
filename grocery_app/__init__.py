@@ -38,8 +38,8 @@ bcrypt = Bcrypt(app)
 from grocery_app.routes import main
 app.register_blueprint(main)
 
-from grocery_app.auth.routes import auth
-app.register_blueprint(auth)
+#from grocery_app.routes import auth
+#app.register_blueprint(auth)
 
 with app.app_context():
     db.create_all()
