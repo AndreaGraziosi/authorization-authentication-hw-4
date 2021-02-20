@@ -1,5 +1,5 @@
 from flask import Blueprint, request, render_template, redirect, url_for, flash
-from flask_login import login_user, logout_user, login_required, current_user
+from flask_login import login_user, logout_user, login_required, current_user, flask_login
 from datetime import date, datetime
 from grocery_app.models import GroceryStore, GroceryItem, User
 from grocery_app.forms import GroceryStoreForm, GroceryItemForm, LoginForm, SignUpForm
@@ -97,6 +97,7 @@ def item_detail(item_id):
             category = form.category.data,
             photo_url =form.photo_url.data,
             store = form.store.data
+            #ad button ?
         )
         db.session.add(new_item)
         db.session.commit()
@@ -107,6 +108,21 @@ def item_detail(item_id):
     item = GroceryItem.query.get(item_id)
     return render_template('item_detail.html', item=item, form=form)
 
+@main.route('/add_to_shopping_list/<item._id>',methods=['POST'])   
+def add_to_shopping_list(item_id):
+   item = GroceryItem.query.get(item_id)
+   form = GroceryItemForm(obj=item)
+
+   if form.validate_on_submit():
+       item.GroceryItem.append(item)
+       pass
+
+@main.route('/shopping_list')
+@login_required
+def shopping_list():
+    # ... get logged in user's shopping list items ...
+    # ... display shopping list items in a template ...
+pass
 # routes.py
 
 auth = Blueprint("auth", __name__)
