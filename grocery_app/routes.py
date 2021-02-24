@@ -111,14 +111,15 @@ def item_detail(item_id):
 
 @main.route('/add_to_shopping_list/<item_id>',methods=['POST'])   
 def add_to_shopping_list(item_id):
-   item = GroceryItem.query.get(item_id)
-   form = GroceryItemForm(obj=item)
+        item = GroceryItem.query.get(item_id)
+        form = GroceryItemForm(obj=item)
 
-   if form.validate_on_submit():
-       item.GroceryItem.append(item)
-    flash('Item details were added to your cart.')
-    return redirect(url_for('main.--------', item_id=new_item.id))   
+        if form.validate_on_submit():
+            item.GroceryItem.append(item)
+            flash('Item details were added to your cart.')
+            return redirect(url_for('main.store_detail.html', item_id=new_item.id))   
 
+        return render_template('item_detail.html', item=item, form=form)
 @main.route('/shopping_list')
 @login_required
 def shopping_list():
