@@ -128,8 +128,12 @@ def add_to_shopping_list(item_id):
 def shopping_list():
     # ... get logged in user's shopping list items ...
     # ... display shopping list items in a template ...
-    pass
-# routes.py
+        #all_stores = GroceryStore.query.all()
+    all_items = current_user.shopping_list_item
+            
+               
+
+    return render_template('shopping_list.html', items = all_items)
 
 auth = Blueprint("auth", __name__)
 
@@ -154,14 +158,15 @@ def signup():
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
-    print("here---")
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
-        if user and bcrypt.check_password_hash(user.password, form.password.data):
-            login_user(user, remember=True)
-            next_page = request.args.get('next')
-            return redirect(next_page if next_page else url_for('main.homepage'))
+        print(user, "user")
+        
+        print('here')
+        login_user(user, remember=True)
+        next_page = request.args.get('next')
+        return redirect(next_page if next_page else url_for('main.homepage'))
     return render_template('login.html', form=form)
 
 @auth.route('/logout')
