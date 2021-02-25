@@ -9,6 +9,7 @@ from grocery_app import app, db
 
 main = Blueprint("main", __name__)
 
+
 ##########################################
 #           Routes                       #
 ##########################################
@@ -16,7 +17,6 @@ main = Blueprint("main", __name__)
 @main.route('/')
 def homepage():
     all_stores = GroceryStore.query.all()
-    print(all_stores)
     return render_template('home.html', all_stores=all_stores)
 
 @main.route('/new_store', methods=['GET', 'POST'])
@@ -28,10 +28,12 @@ def new_store():
         new_GS = GroceryStore(
             title =form.title.data,
             address = form.address.data,
-            created_by = flask_login.current_user
+            created_by = current_user,
+            created_by_id = current_user.id
         )
         db.session.add(new_GS)
         db.session.commit()
+
     
         flash('New Grocery Store was created successfully.')
     # - redirect the user to the store detail page.
@@ -52,7 +54,8 @@ def new_item():
             category = form.category.data,
             photo_url =form.photo_url.data,
             store = form.store.data,
-            created_by = flask_login.current_user
+            created_by = current_user,
+            created_by_id = current_user.id
         )
         db.session.add(new_i)
         db.session.commit()
@@ -97,7 +100,7 @@ def item_detail(item_id):
             category = form.category.data,
             photo_url =form.photo_url.data,
             store = form.store.data
-            #ad button in the template
+            
         
         )
         db.session.add(new_item)
@@ -151,6 +154,7 @@ def signup():
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
+    print("here---")
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
