@@ -37,9 +37,9 @@ def new_store():
     
         flash('New Grocery Store was created successfully.')
     # - redirect the user to the store detail page.
-        return redirect(url_for('main.store_detail', GroceryStore_id=new_GS.id))
+        return redirect(url_for('main.store_detail', store_id=new_GS.id))
     #Send the form to the template and use it to render the form fields
-    return render_template('new_store.html', form =form)
+    return render_template('new_store.html', form=form)
 
 @main.route('/new_item', methods=['GET', 'POST'])
 @login_required
@@ -62,7 +62,7 @@ def new_item():
 
         flash('New item was created successfully.')
     # - redirect the user to the store detail page.
-        return redirect(url_for('main.item_detail', GroceryItem_id=new_i.id))
+        return redirect(url_for('main.item_detail', item_id=new_i.id))
 
     #  Send the form to the template and use it to render the form fields
     return render_template('new_item.html', form=form)
@@ -100,8 +100,6 @@ def item_detail(item_id):
             category = form.category.data,
             photo_url =form.photo_url.data,
             store = form.store.data
-            
-        
         )
         db.session.add(new_item)
         db.session.commit()
@@ -115,25 +113,22 @@ def item_detail(item_id):
 @main.route('/add_to_shopping_list/<item_id>',methods=['POST'])   
 def add_to_shopping_list(item_id):
         item = GroceryItem.query.get(item_id)
-        form = GroceryItemForm(obj=item)
+        current_user.shopping_list_item.append(item)
+            
+        flash('Item details were added to your cart.')
+        return redirect(url_for('main.shopping_list', item_id=item.id))   
 
-        if form.validate_on_submit():
-            item.GroceryItem.append(item)
-            flash('Item details were added to your cart.')
-            return redirect(url_for('main.store_detail.html', item_id=new_item.id))   
-
-        return render_template('item_detail.html', item=item, form=form)
 @main.route('/shopping_list')
 @login_required
 def shopping_list():
     # ... get logged in user's shopping list items ...
     # ... display shopping list items in a template ...
-        #all_stores = GroceryStore.query.all()
+       
     all_items = current_user.shopping_list_item
             
-               
+          
 
-    return render_template('shopping_list.html', items = all_items)
+    return render_template('shopping_list.html', item_id= all_items)
 
 auth = Blueprint("auth", __name__)
 
@@ -161,12 +156,10 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
-        print(user, "user")
-        
-        print('here')
-        login_user(user, remember=True)
-        next_page = request.args.get('next')
-        return redirect(next_page if next_page else url_for('main.homepage'))
+        if user and bcrypt.check_password_hash(user.password, form.password.data):
+            login_user(user, remember=True)
+            next_page = request.args.get('next')
+            return redirect(next_page if next_page else url_for('main.homepage'))
     return render_template('login.html', form=form)
 
 @auth.route('/logout')

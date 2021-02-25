@@ -20,7 +20,8 @@
 
 <h2>Edit Store</h2>
 
-<form>
+<form method="POST">
+    {{ form.csrf_token }}
     <fieldset>
         <legend>Please enter your information:</legend>
 
@@ -29,11 +30,7 @@
 
         {{ form.address.label }}
         {{ form.address }}
-
-        {{form.created_by.label}}
-        {{from.created_by}}
-
-        <input type="submit" value="Submit">
+      <input type="submit" value="Submit">
     </fieldset>
 </form>
 

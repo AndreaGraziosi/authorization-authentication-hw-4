@@ -3,25 +3,24 @@
 
 <h1>My Shopping List</h1>
 
-<form action="/shopping_list" method="">
+<form action="/shopping_list" method="GET">
+    
     <fieldset>
         <legend>My Shopping list items:</legend>
         <div class="items">
-            {% for item in items %}
+                {% for item in items %}
             <div class="item-details">
                 <a href="/item/{{ item.id }}"><img src="{{ item.photo_url }}" alt="{{ item.name }}" width="200px">
                 <p><strong>{{ item.name }}</strong></p></a>
                 <p><strong>Price: ${{ item.price }}</strong></p>
             </div>
-            {% endfor %}
+                 {% endfor %}
         </div>
-       
-
-        <input type="submit" value="Submit">
+    
     </fieldset>
 </form>
 <div>
-    <a href="/base">your shopping list page</a>
+    <a href="/base">Base </html></a>
 </div>
 
 

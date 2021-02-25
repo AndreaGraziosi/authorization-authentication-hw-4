@@ -3,24 +3,45 @@
 
 <h1>New Item</h1>
 
-<form>
+<form method="POST">
+    {{ form.csrf_token }}
     <fieldset>
         <legend>Please enter your information:</legend>
 
         {{ form.name.label }}
         {{ form.name }}
+       
+        {% for error in form.name.errors %}
+        <li class="error">{{ error }}</li>
+        {% endfor %}
 
         {{ form.price.label }}
         {{ form.price }}
+        
+        {% for error in form.price.errors %}
+        <li class="error">{{ error }}</li>
+        {% endfor %}
 
         {{ form.category.label }}
         {{ form.category }}
 
+        {% for error in form.category.errors %}
+        <li class="error">{{ error }}</li>
+         {% endfor %}
+
         {{ form.photo_url.label }}
         {{ form.photo_url }}
 
+        {% for error in form.photo_url.errors %}
+        <li class="error">{{ error }}</li>
+        {% endfor %}
+
         {{ form.store.label }}
         {{ form.store }}
+
+        {% for error in form.store.errors %}
+        <li class="error">{{ error }}</li>
+        {% endfor %}
 
         <input type="submit" value="Submit">
     </fieldset>

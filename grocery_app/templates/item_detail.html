@@ -14,7 +14,8 @@
 
 <h2>Edit Item</h2>
 
-<form>
+<form method="POST">
+    {{ form.csrf_token }}
     <fieldset>
         <legend>Please enter your information:</legend>
 
@@ -33,18 +34,16 @@
 
         {{ form.store.label }}
         {{ form.store }}
-
-        {{form.created_by.label}}
-        {{form.created_by}}
-
         
         <input type="submit" value="Submit">
     </fieldset>
-    </form action="add_to_shopping_list/{{ item.id }}" method="Post">
-    <input type="submit" value="Add to shopping list">
-    <form>
-
-
 </form>
+    
+<form action="/add_to_shopping_list/{{ item.id }}" method="Post">
+    <input type="submit" value="Add to shopping list">
+ </form>
+
+
+
 
 {% endblock %}
