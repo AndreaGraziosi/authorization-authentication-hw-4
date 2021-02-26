@@ -114,9 +114,12 @@ def item_detail(item_id):
 def add_to_shopping_list(item_id):
         item = GroceryItem.query.get(item_id)
         current_user.shopping_list_item.append(item)
-            
+        
+        db.session.add(current_user)
+        db.session.commit()  
+        
         flash('Item details were added to your cart.')
-        return redirect(url_for('main.shopping_list', item_id=item.id))   
+        return redirect(url_for('main.shopping_list'))   
 
 @main.route('/shopping_list')
 @login_required
@@ -125,10 +128,10 @@ def shopping_list():
     # ... display shopping list items in a template ...
        
     all_items = current_user.shopping_list_item
-            
+    print(all_items)        
           
 
-    return render_template('shopping_list.html', item_id= all_items)
+    return render_template('shopping_list.html', items= all_items)
 
 auth = Blueprint("auth", __name__)
 
